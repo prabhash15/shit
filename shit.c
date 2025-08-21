@@ -6,18 +6,19 @@
 #include <dirent.h>
 #include <fcntl.h>
 
-#define shit_folder sh
+#define shit_folder "sh"
 
 int check_if_initialized();
 void uninitialize();
 int initialize();
 void empty_dir();
+void status(char path[]);
 
-#include "status.c"
 
 const float version = 1.0;
 char shit_initial[1024];
-char shit_folder[] = "sh";
+
+#include "status.c"
 
 void empty_dir(){
 
@@ -121,6 +122,9 @@ int main(int argc, char *argv[])
             }
             else if (!strcmp("-shit" , argv[i])){
                 uninitialize();
+            }
+            else if (!strcmp("status" , argv[i])){
+                status(".");
             }
             else{
                 printf("Invalid\n");
