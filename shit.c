@@ -6,13 +6,13 @@
 #include <dirent.h>
 #include <fcntl.h>
 
-#define shit_folder "sh"
+#define shit_folder ".sh"
 
 int check_if_initialized();
 void uninitialize();
 int initialize();
 void empty_dir();
-void status(char path[]);
+void status(char path[] , int depth);
 int check_if_dir(char path[]);
 
 
@@ -82,7 +82,7 @@ void uninitialize(){
 
     if (check_if_initialized()) {
         empty_dir();
-        rmdir("sh");
+        rmdir(shit_folder);
         printf("Removed SHIT\n");
     }
     else{
@@ -96,8 +96,9 @@ int initialize(){
     int permisson_bits = 0777;
 
     if (!check_if_initialized()){
-        mkdir("sh", permisson_bits);
-        creat("sh/files.txt", permisson_bits);
+        char folder[1000];
+        mkdir(shit_folder, permisson_bits);
+        creat(strcat(strcat(folder , shit_folder), "/files.txt"), permisson_bits);
         printf("Initialized SHIT");
         return 1;
     }
@@ -127,7 +128,10 @@ int main(int argc, char *argv[])
                 uninitialize();
             }
             else if (!strcmp("status" , argv[i])){
-                status(".");
+                if (check_if_initialized()) status("." , 0);
+                else{
+                    printf("Not a shit repo\n");
+                }
                 
             }
             else{
