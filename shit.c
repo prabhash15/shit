@@ -13,6 +13,7 @@ void uninitialize();
 int initialize();
 void empty_dir();
 void status(char path[]);
+int check_if_dir(char path[]);
 
 
 const float version = 1.0;
@@ -34,6 +35,7 @@ void empty_dir(){
 
         if (strcmp(".", entry->d_name) && strcmp("..", entry->d_name)){
             char filepath[1024];
+
             snprintf(filepath, sizeof(filepath), "%s/%s" , shit_folder , entry->d_name );
             remove(filepath);
 
@@ -44,7 +46,7 @@ void empty_dir(){
 
 
 int check_if_initialized(){
-    
+
     struct dirent *entry;
     DIR *dir = opendir(".");
 
@@ -88,10 +90,11 @@ void uninitialize(){
     }
 }
 
+
 int initialize(){
 
     int permisson_bits = 0777;
-    
+
     if (!check_if_initialized()){
         mkdir("sh", permisson_bits);
         creat("sh/files.txt", permisson_bits);
@@ -102,7 +105,7 @@ int initialize(){
         printf("Already Initialized\n");
         return 0;
     }
-    }
+}
 
 
 int main(int argc, char *argv[])
@@ -116,8 +119,8 @@ int main(int argc, char *argv[])
 
             else if (!strcmp("init" , argv[i])){
 
-                 int initialize_success = initialize();
-                 if (!initialize_success) return 0;
+                int initialize_success = initialize();
+                if (!initialize_success) return 0;
 
             }
             else if (!strcmp("-shit" , argv[i])){
@@ -125,6 +128,7 @@ int main(int argc, char *argv[])
             }
             else if (!strcmp("status" , argv[i])){
                 status(".");
+                
             }
             else{
                 printf("Invalid\n");
